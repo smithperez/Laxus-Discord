@@ -1,5 +1,6 @@
 import string
 import random
+from discord.embeds import Embed
 
 from discord.ext.commands.core import command
 from Tools import general_tools as gt
@@ -53,7 +54,7 @@ class Bank(commands.Cog):
 
     # Registe in the bank
     @commands.command(aliases=[])
-    async def bank_create(self, ctx):
+    async def bank_register(self, ctx):
         author = ctx.author.mention
 
         with open('DataBase/profile_db.json', 'r') as f:
@@ -100,6 +101,91 @@ class Bank(commands.Cog):
             embed.set_footer(
                 text=f'{section_name} {bot_footer}', icon_url=f'{bot_icon}')
             await ctx.send(embed=embed)
+    
+    #? Show Balance
+    @commands.command(aliases=[])
+    async def bank_balance(self, ctx):
+        author = ctx.author.mention
+        
+        with open('DataBase/profile_db.json', 'r') as f:
+            balance_info = json.load(f)
+        
+        if(author in balance_info):
+            if("bank_balance" in balance_info[author]):
+                balance = balance_info[author]["bank_balance"]
+                embed = discord.Embed()
+                embed.set_footer(text=f'{bot_name} {bot_footer}', icon_url=f'{bot_icon}')
+                embed.add_field(name='Balance🏧', value=f"You have {balance}💰 in your account.")
+                await ctx.send(embed=embed)
+            else:
+                embed = discord.Embed(color= bot_color)
+                embed.set_footer(text=f'{bot_name} {bot_footer}', icon_url=f'{bot_icon}')
+                embed.add_field(name='❌Error❌', value=f'Please open a Bank Account🏦 with the command ***{command_prefix}bank_register***.')
+                await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(color=bot_color)
+            embed.add_field(
+                name='❌Error❌', 
+                value=f'You are not in the DataBase, please use ***{command_prefix}register*** to get registered.')
+            embed.set_footer(
+                text=f'{section_name} {bot_footer}', icon_url=f'{bot_icon}')
+            await ctx.send(embed=embed)
+    
+    #? Make Transfer 
+    @commands.command(aliases=[])
+    async def bank_transfer(self, ctx, amount, user:discord.User):
+        author = ctx.author.mention
+        user = user.mention
+        
+        #Read the database
+        with open('DataBase/profile_db.json', 'r') as f:
+            financial_info = json.load(f)
+        
+        if(author in financial_info and "bank_account" in financial_info[author]):
+            if(int(amount) > financial_info[author]["bank_balance"]):
+                embed = discord.Embed()
+                embed.add_field(name='❌Error❌', value="You don't have enough money for this transaction💸.")
+                embed.set_footer(text=f'{bot_name} {bot_footer}', icon_url=f'{bot_icon}')
+                await ctx.send(embed=embed)
+            elif(int(amount) < 0):
+                embed = discord.Embed()
+                embed.add_field(name='❌Error❌', value="You can't make negative transactions💸.")
+                embed.set_footer(text=f'{bot_name} {bot_footer}', icon_url=f'{bot_icon}')
+                await ctx.send(embed=embed)
+            elif(author == user):
+                embed = discord.Embed(color = bot_color)
+                embed.add_field(name='❌Error❌', value=f"Sorry, you can't make a transfer to yourself.")
+                embed.set_footer(text=f'{bot_name} {bot_footer}', icon_url=f'{bot_icon}')
+                await ctx.send(embed=embed)
+            elif(user in financial_info):
+                if("bank_account" in financial_info[user]):
+                    #Read the database
+                    with open('DataBase/profile_db.json', 'r') as f:
+                        financial_info = json.load(f)
+                    
+                    #Make the balance transfer
+                    financial_info[author]["bank_balance"] = financial_info[author]["bank_balance"] - int(amount)
+                    financial_info[user]["bank_balance"] = int(amount) + financial_info[user]["bank_balance"]
+        
+                    with open('DataBase/profile_db.json', 'w') as f:
+                        json.dump(financial_info, f, indent=2)
+
+                    #Print the receipt
+                    embed = discord.Embed(color = bot_color)
+                    embed.add_field(name='✅Transaction Successful✅', value=f"{author} has transfered {int(amount)}💲 to {user}")
+                    embed.set_footer(text=f'{bot_name} {bot_footer}', icon_url=f'{bot_icon}')
+                    await ctx.send(embed=embed)
+            elif(user not in financial_info):
+                embed = discord.Embed(color = bot_color)
+                embed.add_field(name='❌Error❌', value=f"Sorry, {user} doesn't have a bank account.")
+                embed.set_footer(text=f'{bot_name} {bot_footer}', icon_url=f'{bot_icon}')
+                await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed()
+            embed.add_field(name='❌Error❌', value=f"Sorry, you don't have a bank account. Use the command ***!bank_register*** for create one.")
+            embed.set_footer(text=f'{bot_name} {bot_footer}', icon_url=f'{bot_icon}')
+            await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(Bank(bot))
