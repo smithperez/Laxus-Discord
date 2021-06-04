@@ -37,5 +37,5 @@ def create_settings(name, type):
 def create_empty_db(name):
     data = {}
 
-    with open(f"DataBase/{name}_db.json") as f:
+    with open(f"DataBase/{name}_db.json", "w") as f:
         json.dump(data, f, indent=2)

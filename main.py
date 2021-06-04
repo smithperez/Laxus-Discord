@@ -5,7 +5,7 @@ import sys
 sys.path.append('..')
 from Tools import general_tools as gt
 
-if(os.path.isdir('Settings') != True):
+if(os.path.isdir('Settings') != True or os.path.isdir('DataBase' != True)):
     os.mkdir('./Settings')
     os.mkdir('./DataBase')
     
@@ -31,17 +31,17 @@ if(os.path.isdir('Settings') != True):
 with open('./Settings/general_settings.json', 'r') as f:
     settings = json.load(f)
 
-if(settings["token"] == 'DEFAULT'):
+if(settings["bot_token"] == 'DEFAULT'):
     print("Please configure the bot TOKEN before run the script.")
     input('Press any key to continue....')
     exit()
 else:
-    bot = commands.Bot(command_prefix=settings["prefix"], id=None)
+    bot = commands.Bot(command_prefix=settings["command_prefix"], id=None)
 
     for file in os.listdir("Src"):
         if file.endswith(".py"):
             name = file[:-3]
             bot.load_extension(f"Src.{name}")
     
-    token = settings["token"]
+    token = settings["bot_token"]
     bot.run(f"{token}")
