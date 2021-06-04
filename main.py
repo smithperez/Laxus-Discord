@@ -11,7 +11,8 @@ if(os.path.isdir('Settings') != True):
         "name": "Project X",
         "owner": "Error0x03",
         "token": "DEFAULT",
-        "color": 14221056
+        "color": 14221056,
+        "prefix": "!"
     }
 
     with open('./Settings/general_settings.json', 'w') as f:
@@ -34,7 +35,7 @@ else:
     for file in os.listdir("SRC"):
         if file.endswith(".py"):
             name = file[:-3]
-            bot.load_extension(f"cogs.{name}")
+            bot.load_extension(f"SRC.{name}")
     
     token = settings["token"]
     bot.run(f"{token}")
