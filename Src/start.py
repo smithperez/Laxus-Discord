@@ -1,9 +1,9 @@
 from datetime import datetime
-import discord
 from discord.ext import commands
-import json
-from discord.ext.commands.core import command
+import sys
+sys.path.append('..')
 from tqdm import tqdm
+from Tools import general_tools as gt
 
 class Start(commands.Cog):
 
@@ -18,6 +18,8 @@ class Start(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         date = datetime.now()
+        gt.clear(2)
+
         print(f"""
 *****************
 * Logged in as: *

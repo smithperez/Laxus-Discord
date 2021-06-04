@@ -1,8 +1,9 @@
 {
-  "name": "Project X",
-  "owner": "Error0x03",
-  "token": "NzU3OTczMjgzOTk5MDU1ODcy.X2oLoQ.HzC03Y1IheZASBHTWe9_cs_vnRo",
-  "color": 14221056,
-  "prefix": "!"
-
+  "bot_name": "Project X",
+  "bot_owner": "Error0x03",
+  "bot_token": "DEFAULT",
+  "command_prefix": "!",
+  "bot_icon": "https://cdn2.iconfinder.com/data/icons/reptiles-colored/48/Animals_Reptiles_Artboard_17-512.png",
+  "bot_color": 14221056,
+  "bot_footer": "This is a footer"
 }
