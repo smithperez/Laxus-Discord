@@ -3,6 +3,8 @@ import os
 from discord.ext import commands
 import sys
 
+from discord.ext.commands.core import command
+
 if(os.path.isdir('Settings') != True):
     os.mkdir('./Settings')
     dir = {
@@ -16,5 +18,23 @@ if(os.path.isdir('Settings') != True):
         json.dump(dir, f, indent=2)
     
     input("Settings & files have been created.....\nPress any key to continue...")
-    os.execv(sys.argv[0], sys.argv)
-    print("Okey")
+    input("Please go to ./Settings/general_settings.json and configyre everything.....\nThen re-start the script.")
+    exit()
+
+with open('./Settings/general_settings.json', 'r') as f:
+    settings = json.load(f)
+
+if(settings["token"] == 'DEFAULT'):
+    print("Please configure the bot TOKEN before run the script.")
+    input('Press any key to continue....')
+    exit()
+else:
+    bot = commands.Bot(command_prefix=settings["prefix"], id=None)
+
+    for file in os.listdir("SRC"):
+        if file.endswith(".py"):
+            name = file[:-3]
+            bot.load_extension(f"cogs.{name}")
+    
+    token = settings["token"]
+    bot.run(f"{token}")

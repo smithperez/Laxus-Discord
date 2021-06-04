@@ -1,0 +1,16 @@
+Black		    65536
+White		    16777215
+Gray		    12632256
+Dark Grey	    8421504
+Red		        16711685
+Dark Red	    8131091
+Green		    65280
+Dark Green	    32768
+Blue		    1791
+Dark Blue	    1249647
+Magenta		    16711935
+Dark Magenta	8388736
+Cyan		    1624568
+Dark Cyan	    2790553
+Yellow		    14221056
+Brown		    7157541
