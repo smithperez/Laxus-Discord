@@ -22,8 +22,7 @@ if(os.path.isdir('Settings') != True or os.path.isdir('DataBase' != True)):
     with open('./Settings/general_settings.json', 'w') as f:
         json.dump(dir, f, indent=2)
     
-    gt.create_settings('none', 1)
-
+    
     input("Settings & files have been created.....\nPress any key to continue...")
     input("Please go to ./Settings/ and configyre all the files there.....\nThen re-start the script.")
     exit()

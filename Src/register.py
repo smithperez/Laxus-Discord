@@ -57,6 +57,7 @@ class Register(commands.Cog):
                 "level": 1,
                 "next_level": 15,
                 "casino_balance": 0,
+                "job": "Unemployed",
             }
 
             with open('DataBase/profile_db.json', 'w') as f:
